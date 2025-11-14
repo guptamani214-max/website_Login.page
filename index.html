@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+<link rel="stylesheet" href="sttyle2.css">
+<link rel="shortcut icon" href="https://png.pngtree.com/png-clipart/20190924/original/pngtree-forms-icon-for-your-project-png-image_4851613.jpg" type="image/x-icon">
+</head>
+<body>
+
+  <div id="status-message"></div>
+  <div class="main-container">
+      <div class="main-box">
+        <div class="login-box">
+              <h2>Website</h2>
+              <div class="tabs">
+                <button class="tab-button active" onclick="showlogin()">Login</button>
+                <button class="tab-button active" onclick="showregister()">Register</button>
+              </div>
+
+      <div id="login-form" class="form-section">
+                <form  onsubmit="handleLogin(event)">
+                      <div   class="input-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="gupta@gmail.com" required>
+                      </div>
+                
+                      <div class="input-group">
+                        <label for="login-passwd"> Password</label>
+                        <input type="password" id="login-passwd" placeholder="*******" required>
+                      </div>
+                        <button type="submit"  class="auth-button">LOGIN></button>
+                </form>
+
+                        <p class="switch-link"  >New user click? <a href="#"  onclick="showRegister()">register</a></p>
+            </div>
+
+            <div id="register-form" class="form-section hidden">
+                <form onsubmit="handleRegister(event)">
+                      <div class="input-group">
+                        <label for="reg-username">Username</label>
+                        <input type="text" id="reg-username" placeholder="mostergaming.."required>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="reg-email"></label>
+                        <input type="text" id="reg-email" placeholder="manish@gmail.com">
+                      </div>
+                        <div class="input-group">
+                        <label for="reg-password">Creat Password</label>
+                        <input type="text" id="reg-password" placeholder=".........." required>
+                      </div>
+                            <button type="submit" class="auth-button register-btn">REGISTER</button>
+                </form>
+
+                      <p class="switch-link">Already have you account  <a href="#" onclick="showLogin()">login </a></p>
+</div>
+                    </div>
+      </div>
+  </div>
+  <script>
+
+
+
+
+const msgContainer = 
+document.getElementById('status-message');
+
+function showMassage(msg,type){
+  msgContainer.textContent = msg;
+
+  if (type === 'success'){
+    msgContainer.style.backgroundColor = 'rgba(76,175,80,0.9)';
+  }else if (type === 'error'){
+    msgContainer.style.backgroundColor = 'rgba(244,193,54,0.9)';
+  }else if (type === 'warning'){
+    msgContainer.style.backgroundColor = 'rgba(255,193,7,0.9)';
+  }
+
+  msgContainer.style.display = 'block';
+
+  setTimeout(()=>{
+    msgContainer.style.display = 'none';
+    msgContainer.textContent ='';
+  },3000);
+}
+
+      
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const Username =
+            document.getElementById('reg-username').value;
+            const email =
+            document.getElementById('reg-email').value;
+            const password = 
+            document.getElementById('reg-password').value;
+
+
+            if(!Username || !email || !password){
+                showMassage("Please fill in all registration field.","warning");
+                return;
+            }
+
+            const users = 
+            JSON.parse(localStorage.getItem('users'))||{}
+
+            if (users[email]){
+                showMassage("Registration faild:THis email is already registered","error");
+                return;
+            }
+
+
+            users[email] = {Username,password};
+            localStorage.setItem('users',JSON.stringify(users));
+            
+            showMassage("Registration succefully You can now login your account","success");
+
+            showLogin();
+        }
+
+        function handleLogin(event){
+            event.preventDefault();
+
+            const email = 
+            document.getElementById('login-email').value;
+
+            const password = 
+            document.getElementById('login-passwd').value;
+
+            const user = 
+            JSON.parse(localStorage.getItem('users'))||{};
+
+            if(users[email] && email ===email.password ===password){
+
+                showMassage('login successfull! Welcome,& {users[email].Username}.');
+                return;
+
+
+            }else{
+                showMassage('login failed : Invoild email or password .');
+                return
+
+            }
+        }
+
+function showLogin() {
+    document.getElementById('login-form').classList.add('active');
+    document.getElementById('login-form').classList.remove('hidden');
+    
+    document.getElementById('register-form').classList.remove('active');
+    document.getElementById('register-form').classList.add('hidden');
+    
+    document.querySelector('.tabs .tab-button:nth-child(1)').classList.add('active');
+    document.querySelector('.tabs .tab-button:nth-child(2)').classList.remove('active');
+}
+
+function showRegister() {
+    document.getElementById('register-form').classList.add('active');
+    document.getElementById('register-form').classList.remove('hidden');
+    
+  
+    document.getElementById('login-form').classList.remove('active');
+    document.getElementById('login-form').classList.add('hidden');
+    
+    
+  
+    document.querySelector('.tabs .tab-button:nth-child(2)').classList.add('active');
+    
+    document.querySelector('.tabs .tab-button:nth-child(1)').classList.remove('active');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    showLogin();
+});
+    
+
+
+
+          
+    </script>
+  
+</body>
+</html>
